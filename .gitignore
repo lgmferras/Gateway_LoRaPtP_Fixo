@@ -4,11 +4,78 @@
 *.elf
 *.bin
 *.map
+*.hex
 
 # Pastas de build
 build/
 .pio/
-.vscode/
+.pioenvs/
+.piolibdeps/
 
-# Arquivos de configuração local
+# VSCode
+.vscode/
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch
+
+# Arduino
+*.sketch/
+
+# PlatformIO
+.pio
+.pioenvs
+.piolibdeps
+.clang_complete
+.gcc-flags.json
+
+# ESP32 específico
+sdkconfig
 sdkconfig.old
+*.swo
+*.swp
+*.swn
+*~
+
+# Backup files
+*~
+*.bak
+*.tmp
+*.temp
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# Documentação gerada
+doc/
+docs/html/
+docs/latex/
+
+# Secrets (nunca commitar senhas!)
+secrets.h
+credentials.h
+wifi_config.h
+
+# IDE
+*.sublime-project
+*.sublime-workspace
+.idea/
+*.iml
+
+# Python (se usar scripts auxiliares)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# Node.js (se usar Node-RED ou ferramentas JS)
+node_modules/
+npm-debug.log
+yarn-error.log
