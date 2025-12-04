@@ -1,0 +1,14 @@
+# Arquivos de compilação
+*.o
+*.a
+*.elf
+*.bin
+*.map
+
+# Pastas de build
+build/
+.pio/
+.vscode/
+
+# Arquivos de configuração local
+sdkconfig.old
