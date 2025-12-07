@@ -47,12 +47,12 @@ git config --global user.email "seu@email.com"
 Certifique-se que a estrutura está assim:
 
 ```
-Gateway_LoRaPtP_Fixo_v1_3/
-├── .gitignore                          ← Adicionar
-├── LICENSE                             ← Adicionar
-├── README.md                           ← Adicionar
-├── platformio.ini                      ← Opcional
-├── Gateway_LoRaPtP_Fixo_v1_3.ino
+Gateway_LoRaPtP_Fixo/
+├── .gitignore                          
+├── LICENSE                             
+├── README.md                           
+├── platformio.ini                      
+├── Gateway_LoRaPtP_Fixo.ino
 ├── config.h
 ├── protocol.h
 ├── lora_p2p.h
@@ -65,15 +65,7 @@ Gateway_LoRaPtP_Fixo_v1_3/
 ├── wifi_mqtt.cpp
 ├── at_commands.h
 └── at_commands.cpp
-```
 
-**Copie os arquivos que criei:**
-- `README.md` (substitua o seu se já tiver um)
-- `.gitignore`
-- `LICENSE`
-- `platformio.ini` (opcional)
-
----
 
 ## ✅ Passo 4: Fazer o Primeiro Commit
 
@@ -205,13 +197,13 @@ git reset --hard
 
 ---
 
-## 📊 Badges para o README (Opcional)
+## 📊 Badges para o README
 
 Adicione badges no topo do README.md:
 
 ```markdown
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Version](https://img.shields.io/badge/version-1.3-blue.svg)]()
+[![Version](https://img.shields.io/badge/version-1.3.1-blue.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-ESP32-orange.svg)]()
 [![LoRa](https://img.shields.io/badge/LoRa-915MHz-red.svg)]()
@@ -264,14 +256,4 @@ Configure SSH corretamente ou use HTTPS com token.
 
 ---
 
-## ✅ Pronto!
-
-Seu projeto agora está versionado e disponível no GitHub! 🎉
-
-**Próximos passos:**
-1. Compartilhe o link com a comunidade
-2. Adicione issues/features que planeja implementar
-3. Aceite contribuições da comunidade
-4. Mantenha o README atualizado
-
-**Link do seu projeto:** `https://github.com/SEU_USUARIO/NOME_REPO`
+**Link do projeto:** `https://github.com/lgmferras/Gateway_LoRaPtP_Fixo`

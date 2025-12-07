@@ -1,6 +1,6 @@
 # 📡 Gateway LoRa P2P - ESP32 Single Channel
 
-[![Version](https://img.shields.io/badge/version-1.3-blue.svg)](https://github.com/seu-usuario/gateway-lora-p2p)
+[![Version](https://img.shields.io/badge/version-1.3.1-blue.svg)](https://github.com/seu-usuario/gateway-lora-p2p)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-ESP32-orange.svg)](https://www.espressif.com/)
 
@@ -120,8 +120,8 @@ GND      -->   LED (cátodo via resistor 220Ω)
                     │             │ └─────── Power (3.3V)
                     │             └───────── GND
                     │
-    ┌───────────────┼────────────────────────┐
-    │               │                        │
+    ┌───────────────┼───────────────────────┐
+    │               │                       │
 ┌───▼───┐      ┌────▼────┐              ┌───▼───┐
 │ LoRa  │      │ Sensors │              │ OLED  │
 │SX1276 │      │ I²C Bus │              │128x64 │
@@ -136,9 +136,9 @@ GND      -->   LED (cátodo via resistor 220Ω)
 ## 📁 Estrutura do Projeto
 
 ```
-Gateway_LoRaPtP_Fixo_v1_3/
+Gateway_LoRaPtP_Fixo/
 │
-├── Gateway_LoRaPtP_Fixo_v1_3.ino   # Arquivo principal
+├── Gateway_LoRaPtP_Fixo.ino   # Arquivo principal
 ├── config.h                         # Configurações e defines
 ├── protocol.h                       # Estrutura do payload LoRa
 │
@@ -220,8 +220,8 @@ Após o upload, abra o **Serial Monitor** (115200 baud):
 
 ```
 ╔════════════════════════════════════════╗
-║   Gateway LoRa P2P v1.3                ║
-║   Build: 2025-12-04                    ║
+║   Gateway LoRa P2P v1.3.1              ║
+║   Build: 2025-12-07                    ║
 ╚════════════════════════════════════════╝
 
 📡 Inicializando LoRa...

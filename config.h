@@ -2,8 +2,8 @@
 #define CONFIG_H
 
 // ===== VERSÃO =====
-#define FW_VERSION "1.3"
-#define FW_DATE "2025-12-04"
+#define FW_VERSION "1.3.1"
+#define FW_DATE "2025-12-07"
 
 // ===== PINOS LoRa SX1276 =====
 #define LORA_SCK 12
@@ -47,6 +47,6 @@
 // ===== MQTT/WiFi =====
 #define DEBUG_MQTT 1
 #define DEFAULT_MQTT_PORT 1883
-#define MQTT_BUFFER_SIZE 512
+#define MQTT_BUFFER_SIZE 1024
 
 #endif

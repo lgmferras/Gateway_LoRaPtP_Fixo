@@ -1,9 +1,5 @@
 # ✅ ARQUIVOS CRIADOS - Gateway LoRa P2P
 
-Criei todos os arquivos necessários para você versionar seu projeto no GitHub de forma profissional!
-
----
-
 ## 📦 Arquivos Criados
 
 ### 1. **README.md** (17 KB)

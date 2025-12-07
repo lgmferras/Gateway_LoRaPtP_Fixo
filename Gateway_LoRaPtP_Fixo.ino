@@ -1,6 +1,5 @@
 /*
- * Gateway_LoRaPtP_Fixo v1.3
- * Estrutura modular profissional
+ * Gateway_LoRaPtP_Fixo v1.3.1
  * Comandos AT+ para configuração
  */
 
