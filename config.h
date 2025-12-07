@@ -2,7 +2,7 @@
 #define CONFIG_H
 
 // ===== VERSÃO =====
-#define FW_VERSION "1.3.1"
+#define FW_VERSION "1.4"
 #define FW_DATE "2025-12-07"
 
 // ===== PINOS LoRa SX1276 =====
@@ -12,6 +12,11 @@
 #define LORA_SS 10
 #define LORA_RST 14
 #define LORA_DIO0 4
+
+// ===== PINOS GPS GY-GPS6MV2 =====
+#define GPS_RX_PIN 16   // ESP32 RX2 ← GPS TX
+#define GPS_TX_PIN 17   // ESP32 TX2 → GPS RX
+#define GPS_BAUD 9600   // Padrão do NEO-6M
 
 // ===== PINOS GERAIS =====
 #define GW_LED 2
@@ -27,26 +32,31 @@
 
 // ===== INTERVALOS (ms) =====
 #define SENSOR_READ_INTERVAL 10000   // 10s
+#define GPS_UPDATE_INTERVAL 1000     // 1s
 #define DISPLAY_UPDATE_INTERVAL 2000  // 2s
 #define STATS_INTERVAL 60000          // 60s
+
+// ===== TIMEOUTS =====
+#define GPS_TIMEOUT 30000     // 30s sem atualização = sem fix
+#define NODE_TIMEOUT 30000    // 30s sem pacote = offline
 
 // ===== LIMITES =====
 #define MAX_PACKET_SIZE 256
 #define PAYLOAD_SIZE 20
-#define NODE_TIMEOUT 30000  // 30s sem pacote = offline
 
 // ===== DEBUG =====
 #define DEBUG_SERIAL 1
 #define DEBUG_LORA 1
 #define DEBUG_SENSORS 1
+#define DEBUG_GPS 1
+#define DEBUG_GPS_RAW 0      // 0=off, 1=mostrar NMEA bruto
+#define DEBUG_MQTT 1
 
 // ===== AT COMMANDS =====
 #define AT_CMD_ENABLED 1
 #define AT_SERIAL_BAUD 115200
 
 // ===== MQTT/WiFi =====
-#define DEBUG_MQTT 1
-#define DEFAULT_MQTT_PORT 1883
 #define MQTT_BUFFER_SIZE 1024
 
 #endif

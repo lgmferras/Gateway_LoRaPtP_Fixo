@@ -6,6 +6,9 @@
 *.map
 *.hex
 
+Pasta de files
+files/
+
 # Pastas de build
 build/
 .pio/

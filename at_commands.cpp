@@ -2,6 +2,7 @@
 #include "config.h"
 #include "lora_p2p.h"
 #include "sensors.h"
+#include "gps.h"
 #include "protocol.h"
 #include "wifi_mqtt.h"
 
@@ -16,16 +17,21 @@ void printATHelp() {
   Serial.println("\n╔════════════════════════════════════════════════════╗");
   Serial.println("║            COMANDOS AT+ GATEWAY v" FW_VERSION "             ║");
   Serial.println("╠════════════════════════════════════════════════════╣");
+  Serial.println("║ INFORMAÇÕES                                        ║");
   Serial.println("║ AT+VER          - Versão firmware                  ║");
   Serial.println("║ AT+STATUS       - Status do gateway                ║");
   Serial.println("║ AT+SENSORS      - Ler sensores                     ║");
+  Serial.println("║ AT+GPS          - Dados GPS do gateway             ║");
+  Serial.println("║ AT+GPSRAW       - NMEA sentences (debug)           ║");
   Serial.println("║ AT+STATS        - Estatísticas LoRa                ║");
+  Serial.println("╠════════════════════════════════════════════════════╣");
+  Serial.println("║ CONFIGURAÇÃO LoRa                                  ║");
   Serial.println("║ AT+FREQ=<MHz>   - Mudar frequência (915.2-928.0)   ║");
   Serial.println("║ AT+SF=<n>       - Spreading Factor (7-12)          ║");
   Serial.println("║ AT+BW=<kHz>     - Bandwidth (125/250/500)          ║");
   Serial.println("║ AT+PWR=<dBm>    - TX Power (2-20)                  ║");
   Serial.println("╠════════════════════════════════════════════════════╣");
-  Serial.println("║ WiFi/MQTT:                                         ║");
+  Serial.println("║ WiFi/MQTT                                          ║");
   Serial.println("║ AT+WSSID=<ssid>      - Configurar SSID WiFi        ║");
   Serial.println("║ AT+WPASS=<pass>      - Configurar senha WiFi       ║");
   Serial.println("║ AT+MQSRV=<server>    - Servidor MQTT               ║");
@@ -38,6 +44,7 @@ void printATHelp() {
   Serial.println("║ AT+WIFIOFF          - Desabilitar WiFi/MQTT        ║");
   Serial.println("║ AT+WSTATUS          - Status WiFi/MQTT             ║");
   Serial.println("╠════════════════════════════════════════════════════╣");
+  Serial.println("║ SISTEMA                                            ║");
   Serial.println("║ AT+RESET        - Reiniciar gateway                ║");
   Serial.println("║ AT+HELP         - Esta ajuda                       ║");
   Serial.println("╚════════════════════════════════════════════════════╝\n");
@@ -73,14 +80,33 @@ void processATCommands() {
                         gwStats.packetsReceived, gwStats.packetsSent);
           Serial.printf("   Last RSSI: %d dBm | SNR: %.1f dB\n",
                         gwStats.lastRssi, gwStats.lastSnr);
+          Serial.printf("   GPS: %s | Sats: %u\n",
+                        getGPSStatus().c_str(), gwGPS.satellites);
           
         } else if (cmdUpper == "AT+SENSORS") {
           readSensors();
+          
+        } else if (cmdUpper == "AT+GPS") {
+          printGPSData();
+          
+        } else if (cmdUpper == "AT+GPSRAW") {
+          Serial.println("\n📡 NMEA Raw Data (10 segundos):");
+          Serial.println("Press any key to stop...\n");
+          
+          unsigned long start = millis();
+          while (millis() - start < 10000) {
+            while (GPS_Serial.available()) {
+              Serial.write(GPS_Serial.read());
+            }
+            if (Serial.available()) break;  // Parar se tecla pressionada
+          }
+          Serial.println("\n--- Fim NMEA Raw ---");
           
         } else if (cmdUpper == "AT+STATS") {
           loraPrintConfig();
           Serial.printf("Packets RX: %lu\n", gwStats.packetsReceived);
           Serial.printf("Packets TX: %lu\n", gwStats.packetsSent);
+          Serial.printf("GPS Fix: %s\n", hasGPSFix() ? "YES" : "NO");
           Serial.printf("Uptime: %.1f min\n", millis()/60000.0);
           
         } else if (cmdUpper.startsWith("AT+FREQ=")) {
@@ -121,7 +147,7 @@ void processATCommands() {
 
         // ===== WiFi/MQTT - USAR originalBuffer para manter case! =====
         } else if (cmdUpper.startsWith("AT+WSSID=")) {
-          String ssid = originalBuffer.substring(9);  // ← USA ORIGINAL!
+          String ssid = originalBuffer.substring(9);
           ssid.trim();
           strncpy(wifiMqttCfg.ssid, ssid.c_str(), sizeof(wifiMqttCfg.ssid)-1);
           wifiMqttCfg.ssid[sizeof(wifiMqttCfg.ssid)-1] = '\0';
@@ -129,7 +155,7 @@ void processATCommands() {
           Serial.printf("SSID configurado: %s\n", wifiMqttCfg.ssid);
           
         } else if (cmdUpper.startsWith("AT+WPASS=")) {
-          String pass = originalBuffer.substring(9);  // ← USA ORIGINAL!
+          String pass = originalBuffer.substring(9);
           pass.trim();
           strncpy(wifiMqttCfg.password, pass.c_str(), sizeof(wifiMqttCfg.password)-1);
           wifiMqttCfg.password[sizeof(wifiMqttCfg.password)-1] = '\0';
@@ -137,7 +163,7 @@ void processATCommands() {
           Serial.println("Senha WiFi configurada");
           
         } else if (cmdUpper.startsWith("AT+MQSRV=")) {
-          String srv = originalBuffer.substring(9);  // ← USA ORIGINAL!
+          String srv = originalBuffer.substring(9);
           srv.trim();
           strncpy(wifiMqttCfg.mqttServer, srv.c_str(), sizeof(wifiMqttCfg.mqttServer)-1);
           wifiMqttCfg.mqttServer[sizeof(wifiMqttCfg.mqttServer)-1] = '\0';
@@ -155,7 +181,7 @@ void processATCommands() {
           }
           
         } else if (cmdUpper.startsWith("AT+MQUSER=")) {
-          String user = originalBuffer.substring(10);  // ← USA ORIGINAL!
+          String user = originalBuffer.substring(10);
           user.trim();
           strncpy(wifiMqttCfg.mqttUser, user.c_str(), sizeof(wifiMqttCfg.mqttUser)-1);
           wifiMqttCfg.mqttUser[sizeof(wifiMqttCfg.mqttUser)-1] = '\0';
@@ -163,7 +189,7 @@ void processATCommands() {
           Serial.printf("Usuário MQTT: %s\n", wifiMqttCfg.mqttUser);
           
         } else if (cmdUpper.startsWith("AT+MQPASS=")) {
-          String pass = originalBuffer.substring(10);  // ← USA ORIGINAL!
+          String pass = originalBuffer.substring(10);
           pass.trim();
           strncpy(wifiMqttCfg.mqttPass, pass.c_str(), sizeof(wifiMqttCfg.mqttPass)-1);
           wifiMqttCfg.mqttPass[sizeof(wifiMqttCfg.mqttPass)-1] = '\0';
@@ -171,7 +197,7 @@ void processATCommands() {
           Serial.println("Senha MQTT configurada");
           
         } else if (cmdUpper.startsWith("AT+MQPUB=")) {
-          String topic = originalBuffer.substring(9);  // ← USA ORIGINAL!
+          String topic = originalBuffer.substring(9);
           topic.trim();
           strncpy(wifiMqttCfg.topicPub, topic.c_str(), sizeof(wifiMqttCfg.topicPub)-1);
           wifiMqttCfg.topicPub[sizeof(wifiMqttCfg.topicPub)-1] = '\0';
@@ -179,7 +205,7 @@ void processATCommands() {
           Serial.printf("Tópico Pub: %s\n", wifiMqttCfg.topicPub);
           
         } else if (cmdUpper.startsWith("AT+MQSUB=")) {
-          String topic = originalBuffer.substring(9);  // ← USA ORIGINAL!
+          String topic = originalBuffer.substring(9);
           topic.trim();
           strncpy(wifiMqttCfg.topicSub, topic.c_str(), sizeof(wifiMqttCfg.topicSub)-1);
           wifiMqttCfg.topicSub[sizeof(wifiMqttCfg.topicSub)-1] = '\0';
@@ -242,4 +268,3 @@ void processATCommands() {
     }
   }
 }
-
