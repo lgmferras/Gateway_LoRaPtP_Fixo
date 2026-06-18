@@ -1,6 +1,6 @@
 # 📡 Gateway LoRa P2P - ESP32 Single Channel
 
-[![Version](https://img.shields.io/badge/version-1.3.1-blue.svg)](https://github.com/seu-usuario/gateway-lora-p2p)
+[![Version](https://img.shields.io/badge/version-1.3.1-blue.svg)](https://github.com/lgmferras/Gateway_LoRaPtP_Fixo)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-ESP32-orange.svg)](https://www.espressif.com/)
 
@@ -549,15 +549,17 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 ## 👤 Autor
 
-**Gustavo**  
-Projeto desenvolvido para monitoramento de estações meteorológicas via LoRa P2P.
+**Luis Gustavo Ferras**
+
+- GitHub: [@lgmferras](https://github.com/lgmferras)
+- Email: lgmferras@gmail.com
 
 ---
 
 ## 📞 Suporte
 
-- **Issues:** Reporte bugs ou sugira features através das [GitHub Issues](https://github.com/seu-usuario/gateway-lora-p2p/issues)
-- **Discussões:** Participe das [Discussions](https://github.com/seu-usuario/gateway-lora-p2p/discussions)
+- **Issues:** Reporte bugs ou sugira features através das [GitHub Issues](https://github.com/lgmferras/Gateway_LoRaPtP_Fixo/issues)
+- **Discussões:** Participe das [Discussions](https://github.com/lgmferras/Gateway_LoRaPtP_Fixo/discussions)
 
 ---
 
